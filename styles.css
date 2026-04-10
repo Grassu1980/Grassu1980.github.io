@@ -5,6 +5,14 @@
   --line: #cdb89b;
 }
 
+/* DARK MODE COLORS */
+body.dark {
+  --paper: #2a2a2a;
+  --paper-2: #1f1f1f;
+  --ink: #e6e6e6;
+  --line: #555;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -14,6 +22,7 @@ body {
   font-family: Lora, serif;
   color: var(--ink);
   background: radial-gradient(circle at 10% 20%, #f4ecd9 0%, var(--paper) 46%, #e4d6be 100%);
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
 .container {
@@ -21,6 +30,8 @@ body {
   max-width: 1100px;
   margin: auto;
 }
+
+/* ---------------- HEADER ---------------- */
 
 .site-header {
   position: relative;
@@ -36,20 +47,8 @@ body {
   background-size: cover;
   background-position: center;
   filter: saturate(1.05) contrast(1.05) brightness(0.86);
-}
-
-.hero-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: none;
-}
-
-.hero-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: none;
+  transform: translateY(0);
+  transition: transform 0.1s linear;
 }
 
 .hero-overlay {
@@ -101,20 +100,16 @@ body {
   font-size: clamp(2rem, 5vw, 3rem);
   line-height: 1.05;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  animation: heroFade 1.6s ease forwards;
 }
 
-.btn {
-  background: linear-gradient(#d65a1f, #a63f17);
-  padding: 9px 34px;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 8px;
-  display: inline-block;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
-  font-weight: 700;
+@keyframes heroFade {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
+
+/* ---------------- SECTIONS ---------------- */
 
 .section {
   padding: 46px 0;
@@ -122,11 +117,20 @@ body {
 
 .section-paper {
   background: url("https://www.transparenttextures.com/patterns/paper-fibers.png"), var(--paper);
+  transition: background 0.4s ease;
 }
 
 .section-paper.alt {
   background-color: var(--paper-2);
 }
+
+.section-dark {
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+    url("https://images.unsplash.com/photo-1493244040629-496f6d136cc3?auto=format&fit=crop&w=2000&q=80");
+  color: #fff;
+}
+
+/* ---------------- GALLERY ---------------- */
 
 .gallery-grid {
   display: grid;
@@ -137,6 +141,17 @@ body {
 .card {
   background: #fff;
   border: 1px solid #d2c0a7;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+body.dark .card {
+  background: #333;
+  border-color: #555;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
 }
 
 .image-open {
@@ -154,6 +169,11 @@ body {
   height: 142px;
   object-fit: cover;
   display: block;
+  transition: transform 0.35s ease;
+}
+
+.card:hover img {
+  transform: scale(1.06);
 }
 
 .card-body {
@@ -161,6 +181,8 @@ body {
   padding: 6px;
   font-size: 0.88rem;
 }
+
+/* ---------------- ABOUT ---------------- */
 
 .about-wrap {
   display: grid;
@@ -175,11 +197,7 @@ body {
   box-shadow: 0 6px 15px rgba(43, 29, 20, 0.2);
 }
 
-.section-dark {
-  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
-    url("https://images.unsplash.com/photo-1493244040629-496f6d136cc3?auto=format&fit=crop&w=2000&q=80");
-  color: #fff;
-}
+/* ---------------- CONTACT ---------------- */
 
 .contact-form {
   display: grid;
@@ -193,63 +211,6 @@ textarea {
   font-family: inherit;
 }
 
-.center {
-  text-align: center;
-}
-
-.site-footer {
-  background: #2f261f;
-  color: #f0e3ce;
-  padding: 0.7rem 0;
-  text-align: center;
-}
-
-.deco-title {
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin: 0;
-  position: relative;
-}
-
-.deco-title::before,
-.deco-title::after {
-  content: "";
-  display: inline-block;
-  width: 80px;
-  height: 1px;
-  background: var(--line);
-  vertical-align: middle;
-  margin: 0 14px;
-}
-
-.deco-title.left::before,
-.deco-title.left::after {
-  display: none;
-}
-
-.deco-title.light {
-  color: #f4e8d6;
-}
-
-.section-subtitle {
-  text-align: center;
-  margin: 4px 0 22px;
-  color: #6f5a47;
-}
-
-.section-subtitle.left {
-  text-align: left;
-  margin-bottom: 12px;
-}
-
-.section-subtitle.light {
-  color: #d8c4ac;
-}
-
-.more-wrap {
-  margin-top: 16px;
-}
-
 .contact-grid {
   display: grid;
   grid-template-columns: 1.25fr 1fr;
@@ -261,10 +222,6 @@ textarea {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-}
-
-.contact-info p {
-  margin: 0 0 12px;
 }
 
 .socials {
@@ -281,6 +238,8 @@ textarea {
   place-items: center;
   font-size: 0.75rem;
 }
+
+/* ---------------- LIGHTBOX ---------------- */
 
 .lightbox {
   position: fixed;
@@ -308,6 +267,38 @@ textarea {
   object-fit: contain;
   display: block;
   background: #161616;
+}
+
+/* LOADER */
+.lightbox-loader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease;
+}
+
+.lightbox-loader::after {
+  content: "";
+  width: 42px;
+  height: 42px;
+  border: 4px solid #fff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.lightbox-loader.show {
+  opacity: 1;
+  visibility: visible;
 }
 
 .lightbox-close {
@@ -354,6 +345,129 @@ textarea {
 .lightbox-meta p {
   margin: 0.2rem 0 0;
 }
+
+/* ---------------- TITLES ---------------- */
+
+.deco-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0;
+  position: relative;
+}
+
+.deco-title::before,
+.deco-title::after {
+  content: "";
+  display: inline-block;
+  width: 80px;
+  height: 1px;
+  background: var(--line);
+  vertical-align: middle;
+  margin: 0 14px;
+}
+
+.deco-title.left::before,
+.deco-title.left::after {
+  display: none;
+}
+
+.deco-title.light {
+  color: #f4e8d6;
+}
+
+.section-subtitle {
+  text-align: center;
+  margin: 4px 0 22px;
+  color: #6f5a47;
+}
+
+.section-subtitle.left {
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.section-subtitle.light {
+  color: #d8c4ac;
+}
+
+/* ---------------- FOOTER ---------------- */
+
+.site-footer {
+  background: #2f261f;
+  color: #f0e3ce;
+  padding: 1.2rem 0;
+  text-align: center;
+  position: relative;
+}
+
+.footer-line {
+  width: 120px;
+  height: 2px;
+  background: #d8c4ac;
+  margin: 0 auto 10px;
+  opacity: 0.6;
+}
+
+/* ---------------- BACK TO TOP ---------------- */
+
+#backToTop {
+  position: fixed;
+  bottom: 26px;
+  right: 26px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: #a63f17;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease, transform 0.25s ease;
+  z-index: 999;
+}
+
+#backToTop.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#backToTop:hover {
+  transform: translateY(-4px);
+}
+
+/* ---------------- DARK MODE BUTTON ---------------- */
+
+.btn-darkmode {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 12px;
+  backdrop-filter: blur(4px);
+}
+
+/* ---------------- ANIMATIONS ---------------- */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------------- RESPONSIVE ---------------- */
 
 @media (max-width: 900px) {
   .hero-content {

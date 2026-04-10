@@ -1,3 +1,4 @@
+/* ---------------- CONTACT FORM ---------------- */
 const contactForm = document.getElementById("contactForm");
 if (contactForm) {
   contactForm.addEventListener("submit", (event) => {
@@ -7,6 +8,7 @@ if (contactForm) {
   });
 }
 
+/* ---------------- GALLERY + LIGHTBOX ---------------- */
 const galleryButtons = Array.from(document.querySelectorAll("[data-gallery-image]"));
 const lightbox = document.getElementById("lightbox");
 const lightboxImage = document.getElementById("lightboxImage");
@@ -15,18 +17,26 @@ const lightboxDetails = document.getElementById("lightboxDetails");
 const lightboxClose = document.getElementById("lightboxClose");
 const lightboxPrev = document.getElementById("lightboxPrev");
 const lightboxNext = document.getElementById("lightboxNext");
+const loader = document.getElementById("lightboxLoader");
 
 let activeIndex = 0;
 
 function renderSlide(index) {
   if (!galleryButtons.length || !lightboxImage) return;
-  activeIndex = (index + galleryButtons.length) % galleryButtons.length;
-  const current = galleryButtons[activeIndex];
 
-  lightboxImage.src = current.dataset.src || "";
-  lightboxImage.alt = current.dataset.title || "";
-  if (lightboxTitle) lightboxTitle.textContent = current.dataset.title || "";
-  if (lightboxDetails) lightboxDetails.textContent = current.dataset.details || "";
+  loader.classList.add("show");
+
+  setTimeout(() => {
+    activeIndex = (index + galleryButtons.length) % galleryButtons.length;
+    const current = galleryButtons[activeIndex];
+
+    lightboxImage.src = current.dataset.src || "";
+    lightboxImage.alt = current.dataset.title || "";
+    if (lightboxTitle) lightboxTitle.textContent = current.dataset.title || "";
+    if (lightboxDetails) lightboxDetails.textContent = current.dataset.details || "";
+
+    loader.classList.remove("show");
+  }, 350);
 }
 
 function openLightbox(index) {
@@ -63,4 +73,35 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeLightbox();
   if (event.key === "ArrowLeft") renderSlide(activeIndex - 1);
   if (event.key === "ArrowRight") renderSlide(activeIndex + 1);
+});
+
+/* ---------------- PARALLAX HEADER ---------------- */
+window.addEventListener("scroll", () => {
+  const hero = document.querySelector(".hero-bg");
+  if (!hero) return;
+  const offset = window.scrollY * 0.35;
+  hero.style.transform = `translateY(${offset}px)`;
+});
+
+/* ---------------- BACK TO TOP ---------------- */
+const backToTop = document.getElementById("backToTop");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 300) {
+    backToTop.classList.add("show");
+  } else {
+    backToTop.classList.remove("show");
+  }
+});
+
+backToTop.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+/* ---------------- DARK MODE ---------------- */
+const darkToggle = document.getElementById("darkModeToggle");
+
+darkToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  darkToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
 });
